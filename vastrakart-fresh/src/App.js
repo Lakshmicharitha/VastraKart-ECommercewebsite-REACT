@@ -1,4 +1,5 @@
 // src/App.js
+import './style.css';
 import React from "react";
 import Navbar from "./components/Navbar";
 import ProductList from "./components/ProductList";

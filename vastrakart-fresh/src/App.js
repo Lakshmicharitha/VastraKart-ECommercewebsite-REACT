@@ -1,6 +1,6 @@
 // src/App.js
 import './index.css';
-import React from "react";
+//import React from "react";
 import Navbar from "./components/Navbar";
 import ProductList from "./components/ProductList";
 import CartPage from "./components/CartPage";

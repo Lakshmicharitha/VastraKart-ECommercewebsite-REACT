@@ -29,33 +29,36 @@
 
 ## 📸 Screenshots
 
-### 🖥️ Screenshot 1: Homepage
-![Homepage](/images/screenshot1.png)
+### 🖼️ Screenshot 1: Title
+![Title](vastrakart-fresh/public/images/screenshot1.png)
+
+### 🖥️ Screenshot 2: Homepage
+![Homepage](vastrakart-fresh/public/images/screenshot2.png)
 
 ---
 
-### 🛍️ Screenshot 2: Product Listing Page
-![Product Listing](/images/screenshot2.png)
+### 🛍️ Screenshot 3: Product Listing Page
+![Product Listing](vastrakart-fresh/public/images/screenshot3.png)
 
 ---
 
-### 💖 Screenshot 3: Wishlist Page
-![Wishlist](/images/screenshot3.png)
+### 💖 Screenshot 4: Wishlist Page
+![Wishlist](vastrakart-fresh/public/images/screenshot4.png)
 
 ---
 
-### 🛒 Screenshot 4: Cart Page
-![Cart](/images/screenshot4.png)
+### 🛒 Screenshot 5: Cart Page
+![Cart](vastrakart-fresh/public/images/screenshot5.png)
 
 ---
 
-### 🧾 Screenshot 5: Place Order (Checkout Form)
-![Place Order](/images/screenshot5.png)
+### 🧾 Screenshot 6: Place Order (Checkout Form)
+![Place Order](vastrakart-fresh/public/images/screenshot6.png)
 
 ---
 
-### ✅ Screenshot 6: Order Successfully Placed
-![Order Success](/images/screenshot6.png)
+### ✅ Screenshot 7: Order Successfully Placed
+![Order Success](vastrakart-fresh/public/images/screenshot7.png)
 
 
 ---

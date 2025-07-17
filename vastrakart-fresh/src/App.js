@@ -1,165 +1,161 @@
 // src/App.js
 import './index.css';
 import Navbar from "./components/Navbar";
-import ProductList from "./components/ProductList";
-import CartPage from "./components/CartPage";
-import WishlistPage from "./components/WishlistPage";
-import CheckoutForm from "./components/CheckoutForm";
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useStore } from './context/StoreContext';
 
 const App = () => {
+  const { cart, setCart, wishlist } = useStore();
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [pincode, setPincode] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [placedOrder, setPlacedOrder] = useState(null);
+
+  const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+
+  const handlePlaceOrder = () => {
+    if (!name || !address || !pincode || !paymentMethod) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    if (!/^\d{6}$/.test(pincode)) {
+      alert("Please enter a valid 6-digit pincode.");
+      return;
+    }
+
+    setPlacedOrder({
+      name,
+      address,
+      pincode,
+      paymentMethod,
+      items: cart,
+      total: totalPrice
+    });
+
+    // Clear form and cart
+    setName("");
+    setAddress("");
+    setPincode("");
+    setPaymentMethod("");
+    setCart([]);
+    window.location.hash = "#products";
+  };
+
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "/script.js";
+    script.src = `${process.env.PUBLIC_URL}/script.js`;
     script.async = true;
     document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
   }, []);
 
   return (
-    <div className="App">
-      <h1>VastraKart</h1>
+    <div>
+      <Navbar />
 
-      <nav>
-        <a href="#home">Home</a>
-        <a href="#products">Products</a>
-        <a href="#carttocash">Cart to Cash</a>
-
-        {/* Wishlist icon only, no text */}
-        <a
-          href="#wishlist"
-          onClick={() => {
-            const wishlistSection = document.getElementById('wishlist');
-            if (wishlistSection) wishlistSection.style.display = 'block';
-          }}
-        >
-          <img src="/wishlist.png" alt="Wishlist" />
-        </a>
-
-        {/* Cart icon + text (you can also remove the text similarly if needed) */}
-        <a
-          href="#cart"
-          onClick={() => {
-            if (window.renderCart) window.renderCart();
-            const cartSection = document.getElementById('cart');
-            if (cartSection) cartSection.style.display = 'block';
-          }}
-        >
-          <img src="/addtocart.png" alt="Cart" /> Cart
-        </a>
-
-        <input type="text" placeholder="Search your wish" />
-      </nav>
-
-      <section id="home">
-        <h2>Categories</h2>
-        <div className="categories">
-          <button>New Arrivals</button>
-          <button>On Sale</button>
-          <button>Women</button>
-          <button>Men</button>
-          <button>Children</button>
-        </div>
-
-        <div className="featured-images">
-          <img src="/picture1.jpg" alt="Fashions for Women" />
-          <img src="/picture2.jpg" alt="Fashions for Men" />
-          <img src="/picture3.jpg" alt="Traditionals for all" />
-          <img src="/picture4.jpg" alt="Fashions for Children" />
+      <section id="wishlist">
+        <h2>Wishlist</h2>
+        <div className="product-list">
+          {wishlist.length === 0 ? (
+            <p>No items in wishlist.</p>
+          ) : (
+            wishlist.map((item) => (
+              <div key={item.id} className="product-card">
+                <img src={item.image} alt={item.name} />
+                <h3>{item.name}</h3>
+                <p>₹{item.price}</p>
+              </div>
+            ))
+          )}
         </div>
       </section>
 
-      <section id="products">
-        <h2>Our Products</h2>
-
-        <div className="sort-controls">
-          <button onClick={() => window.sortProducts && window.sortProducts('asc')}>Sort Price ↑</button>
-          <button onClick={() => window.sortProducts && window.sortProducts('desc')}>Sort Price ↓</button>
+      <section id="cart">
+        <h2>Your Cart</h2>
+        <div className="product-list">
+          {cart.length === 0 ? (
+            <p>Your cart is empty.</p>
+          ) : (
+            cart.map((item) => (
+              <div key={item.id} className="product-card">
+                <img src={item.image} alt={item.name} />
+                <h3>{item.name}</h3>
+                <p>₹{item.price}</p>
+              </div>
+            ))
+          )}
         </div>
-
-        <div className="product-grid">
-          <div className="product-card">
-            <a href="kurti.html">
-              <img src="/kurti.jpg" alt="Kurti Set" />
-              <p>Kurti Set - ₹999</p>
-            </a>
-            <button>Add to Cart</button>
+        {cart.length > 0 && (
+          <div className="checkout-summary">
+            <h3>Total: ₹{totalPrice}</h3>
+            <a href="#checkout" className="checkout-button">Proceed to Checkout</a>
           </div>
-          <div className="product-card">
-            <a href="shirt.html">
-              <img src="/shirt.jpg" alt="Men’s Shirt" />
-              <p>Mens Shirt - ₹799</p>
-            </a>
-            <button>Add to Cart</button>
-          </div>
-          <div className="product-card">
-            <a href="kidsdress.html">
-              <img src="/kidsdress.jpg" alt="Kids Dress" />
-              <p>Kids Dress - ₹499</p>
-            </a>
-            <button>Add to Cart</button>
-          </div>
-          <div className="product-card">
-            <a href="saree.html">
-              <img src="/saree.jpg" alt="Saree" />
-              <p>Saree - ₹1499</p>
-            </a>
-            <button>Add to Cart</button>
-          </div>
-          <div className="product-card">
-            <a href="lehenga.html">
-              <img src="/lehenga.jpg" alt="Lehenga" />
-              <p>Lehenga - ₹2999</p>
-            </a>
-            <button>Add to Cart</button>
-          </div>
-        </div>
+        )}
       </section>
 
-      <section id="carttocash">
-        <h2>Cart to Cash</h2>
-        <form>
-          <label htmlFor="name">Name:</label>
-          <input type="text" id="name" required />
-
-          <label htmlFor="phone">Phone Number</label>
+      <section id="checkout">
+        <h2>Checkout</h2>
+        <div className="form">
           <input
-            type="tel"
-            id="phone"
-            name="phone"
-            placeholder="Enter your phone number"
+            type="text"
+            placeholder="Full Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             required
           />
-
-          <label htmlFor="address">Address (Must Include Pincode):</label>
-          <textarea id="address" rows="4" required></textarea>
-
-          <label htmlFor="payment">Payment Method:</label>
-          <select id="payment">
-            <option>Credit Card</option>
-            <option>UPI</option>
-            <option>Cash on Delivery</option>
+          <textarea
+            placeholder="Address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Pincode"
+            value={pincode}
+            onChange={(e) => setPincode(e.target.value)}
+            required
+          />
+          <select
+            value={paymentMethod}
+            onChange={(e) => setPaymentMethod(e.target.value)}
+            required
+          >
+            <option value="">Select Payment Method</option>
+            <option value="cod">Cash on Delivery</option>
+            <option value="upi">UPI</option>
+            <option value="card">Credit/Debit Card</option>
           </select>
-
-          <button type="submit">Place Order</button>
-        </form>
+          <button onClick={handlePlaceOrder}>Place Order</button>
+        </div>
       </section>
 
-      {/* ✅ Only section where "Wishlist" text appears */}
-      <section id="wishlist" style={{ display: 'none' }}>
-        <h2>Your Wishlist</h2>
-        <div className="wishlist-items"></div>
-      </section>
-
-      <section id="cart" style={{ display: 'none' }}>
-        <h2>Your Cart</h2>
-        <div id="cart-items"></div>
-        <p><strong>Subtotal:</strong> ₹<span id="subtotal">0</span></p>
-        <p><strong>Tax (18%):</strong> ₹<span id="tax">0</span></p>
-        <p><strong>Total:</strong> ₹<span id="total">0</span></p>
-        <button id="buy-now-all" onClick={() => window.buyNowAll && window.buyNowAll()}>Buy Now</button>
-      </section>
+      {placedOrder && (
+        <section id="order-summary">
+          <h2>Order Placed Successfully!</h2>
+          <p><strong>Name:</strong> {placedOrder.name}</p>
+          <p><strong>Address:</strong> {placedOrder.address}</p>
+          <p><strong>Pincode:</strong> {placedOrder.pincode}</p>
+          <p><strong>Payment Method:</strong> {placedOrder.paymentMethod}</p>
+          <h3>Ordered Items:</h3>
+          <ul>
+            {placedOrder.items.map((item, index) => (
+              <li key={index}>{item.name} - ₹{item.price}</li>
+            ))}
+          </ul>
+          <h3>Total: ₹{placedOrder.total}</h3>
+        </section>
+      )}
     </div>
   );
 };
 
 export default App;
+
+
+
+

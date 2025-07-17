@@ -12,7 +12,9 @@ export const StoreProvider = ({ children }) => {
     const existing = cart.find((item) => item.id === product.id);
     if (existing) {
       const updated = cart.map((item) =>
-        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
       );
       setCart(updated);
     } else {
@@ -52,3 +54,4 @@ export const StoreProvider = ({ children }) => {
 
 // Custom hook for easier use in components
 export const useStore = () => useContext(StoreContext);
+

@@ -1,8 +1,7 @@
-// src/components/CheckoutForm.jsx
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useStore } from "../context/StoreContext";
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ onOrderPlaced }) => {
   const {
     cart,
     directBuyProduct,
@@ -16,6 +15,9 @@ const CheckoutForm = () => {
   const [address, setAddress] = useState("");
   const [payment, setPayment] = useState("Credit Card");
 
+  // ✅ Ref for scrolling to order details
+  const orderDetailsRef = useRef(null);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!name || !phone || !address) {
@@ -23,31 +25,40 @@ const CheckoutForm = () => {
       return;
     }
 
-    let summary = `Order Summary for ${name}\n`;
+    const order = {
+      name,
+      phone,
+      address,
+      payment,
+      items: [],
+      total: 0,
+    };
 
     if (directBuyFromCart && cart.length > 0) {
-      cart.forEach((item) => {
-        summary += `${item.name} x ${item.quantity} = ₹${item.price * item.quantity}\n`;
-      });
+      order.items = [...cart];
       const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
       const tax = +(subtotal * 0.18).toFixed(2);
-      const total = subtotal + tax;
-      summary += `\nSubtotal: ₹${subtotal}\nTax: ₹${tax}\nTotal: ₹${total}`;
+      order.total = subtotal + tax;
     } else if (directBuyProduct) {
-      summary += `${directBuyProduct.name} = ₹${directBuyProduct.price}`;
-    } else {
-      summary += "No items selected.";
+      order.items = [directBuyProduct];
+      order.total = directBuyProduct.price;
     }
 
-    alert(`Thank you, ${name}!\nYour order is placed.\n\n${summary}`);
+    // Pass data to App.js
+    onOrderPlaced(order);
 
-    // Reset everything
+    // Reset form
     setDirectBuyFromCart(false);
     setDirectBuyProduct(null);
     setName("");
     setPhone("");
     setAddress("");
     setPayment("Credit Card");
+
+    // ✅ Scroll to order details
+    setTimeout(() => {
+      orderDetailsRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
   };
 
   return (
@@ -91,8 +102,12 @@ const CheckoutForm = () => {
 
         <button type="submit">Place Order</button>
       </form>
+
+      {/* ✅ Placeholder for order details to scroll into */}
+      <div ref={orderDetailsRef}></div>
     </section>
   );
 };
 
 export default CheckoutForm;
+

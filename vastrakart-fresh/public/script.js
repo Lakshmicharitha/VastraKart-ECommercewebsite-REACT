@@ -355,3 +355,4 @@ document.getElementById("buy-now-all").addEventListener("click", () => {
 });
 
 renderWishlist();
+

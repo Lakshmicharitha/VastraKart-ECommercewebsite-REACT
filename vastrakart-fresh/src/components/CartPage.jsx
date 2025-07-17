@@ -1,5 +1,5 @@
 // src/components/CartPage.jsx
-import React from "react";
+import React, { useEffect } from "react";
 import { useStore } from "../context/StoreContext";
 
 const CartPage = () => {
@@ -10,6 +10,12 @@ const CartPage = () => {
     setDirectBuyFromCart,
     setDirectBuyProduct,
   } = useStore();
+
+  useEffect(() => {
+    if (typeof window.renderCart === "function") {
+      window.renderCart();
+    }
+  }, []);
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const tax = +(subtotal * 0.18).toFixed(2);
@@ -32,6 +38,10 @@ const CartPage = () => {
   return (
     <section id="cart">
       <h2>Your Cart</h2>
+
+      {/* For compatibility with script.js */}
+      <div id="cart-items" style={{ display: "none" }}></div>
+
       {cart.map((item) => (
         <div key={item.id} className="cart-item">
           <p><strong>{item.name}</strong></p>
@@ -56,3 +66,4 @@ const CartPage = () => {
 };
 
 export default CartPage;
+

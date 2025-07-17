@@ -452,6 +452,9 @@ button.cart-btn:hover {
   cursor: pointer;
   border: none;
 }
+.product-card {
+  overflow: hidden; /* ensures scaling doesn't overflow card */
+}
 
 /* Add to Cart (green button) */
 .product-card .cart-btn {
@@ -460,6 +463,7 @@ button.cart-btn:hover {
 }
 .product-card .cart-btn:hover {
   background-color: #6a7344;
+  transform: scale(1.15);
 }
 
 /* Wishlist Heart */
@@ -479,8 +483,8 @@ button.cart-btn:hover {
 .product-card .buy-btn {
   margin-top: 0.5rem;
   width: 100%;
-  padding: 0.45rem;
-  font-size: 0.85rem;
+  padding: 0.35rem 0.6rem; /* reduced padding */
+  font-size: 0.8rem;        /* smaller text */
   font-weight: 600;
   border-radius: 20px;
   background-color: var(--accent);
@@ -490,6 +494,7 @@ button.cart-btn:hover {
 }
 .product-card .buy-btn:hover {
   background-color: #5b6439;
+  transform: scale(1.03);
 }
 #checkout form {
   display: flex;

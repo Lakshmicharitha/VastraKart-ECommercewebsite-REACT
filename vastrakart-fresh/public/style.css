@@ -452,7 +452,9 @@ button.cart-btn:hover {
   cursor: pointer;
   border: none;
 }
-
+.product-card {
+  overflow: hidden; /* ensures scaling doesn't overflow card */
+}
 /* Add to Cart (green button) */
 .product-card .cart-btn {
   background-color: var(--accent);
@@ -480,8 +482,8 @@ button.cart-btn:hover {
 .product-card .buy-btn {
   margin-top: 0.5rem;
   width: 100%;
-  padding: 0.45rem;
-  font-size: 0.85rem;
+  padding: 0.35rem 0.6rem; /* reduced padding */
+  font-size: 0.8rem;        /* smaller text */
   font-weight: 600;
   border-radius: 20px;
   background-color: var(--accent);

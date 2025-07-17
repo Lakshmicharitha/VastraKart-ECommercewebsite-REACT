@@ -460,6 +460,7 @@ button.cart-btn:hover {
 }
 .product-card .cart-btn:hover {
   background-color: #6a7344;
+  transform: scale(1.15);
 }
 
 /* Wishlist Heart */
@@ -490,4 +491,5 @@ button.cart-btn:hover {
 }
 .product-card .buy-btn:hover {
   background-color: #5b6439;
+  transform: scale(1.15);
 }

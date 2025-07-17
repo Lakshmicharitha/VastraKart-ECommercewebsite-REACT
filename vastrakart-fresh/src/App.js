@@ -1,6 +1,5 @@
 // src/App.js
 import './index.css';
-//import React from "react";
 import Navbar from "./components/Navbar";
 import ProductList from "./components/ProductList";
 import CartPage from "./components/CartPage";
@@ -11,7 +10,7 @@ import React, { useEffect } from 'react';
 const App = () => {
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "/script.js"; // must be in public folder
+    script.src = "/script.js";
     script.async = true;
     document.body.appendChild(script);
   }, []);
@@ -24,15 +23,30 @@ const App = () => {
         <a href="#home">Home</a>
         <a href="#products">Products</a>
         <a href="#carttocash">Cart to Cash</a>
-        <a href="#wishlist" onClick={() => window.scrollTo(0, document.getElementById('wishlist').offsetTop)}>
-          <img src="/wishlist.png" alt="Wishlist" /> Wishlist
+
+        {/* Wishlist icon only, no text */}
+        <a
+          href="#wishlist"
+          onClick={() => {
+            const wishlistSection = document.getElementById('wishlist');
+            if (wishlistSection) wishlistSection.style.display = 'block';
+          }}
+        >
+          <img src="/wishlist.png" alt="Wishlist" />
         </a>
-        <a href="#cart" onClick={() => {
-          if (window.renderCart) window.renderCart();
-          window.scrollTo(0, document.getElementById('cart').offsetTop);
-        }}>
+
+        {/* Cart icon + text (you can also remove the text similarly if needed) */}
+        <a
+          href="#cart"
+          onClick={() => {
+            if (window.renderCart) window.renderCart();
+            const cartSection = document.getElementById('cart');
+            if (cartSection) cartSection.style.display = 'block';
+          }}
+        >
           <img src="/addtocart.png" alt="Cart" /> Cart
         </a>
+
         <input type="text" placeholder="Search your wish" />
       </nav>
 
@@ -108,7 +122,13 @@ const App = () => {
           <input type="text" id="name" required />
 
           <label htmlFor="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required />
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Enter your phone number"
+            required
+          />
 
           <label htmlFor="address">Address (Must Include Pincode):</label>
           <textarea id="address" rows="4" required></textarea>
@@ -124,6 +144,7 @@ const App = () => {
         </form>
       </section>
 
+      {/* ✅ Only section where "Wishlist" text appears */}
       <section id="wishlist" style={{ display: 'none' }}>
         <h2>Your Wishlist</h2>
         <div className="wishlist-items"></div>
@@ -142,4 +163,3 @@ const App = () => {
 };
 
 export default App;
-
